@@ -30,26 +30,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function Tables({ data }) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [amountTerm, setAmountTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [amountTerm, setAmountTerm] = useState("");
 
   // Filter customers based on name search input
-  const filteredCustomers = data?.customers?.filter(customer =>
+  const filteredCustomers = data?.customers?.filter((customer) =>
     customer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  //  // Further filter transactions based on amount only
+  //  const filteredData = filteredCustomers?.map(customer => {
+  //   const transactions = data?.transactions?.filter(transaction =>
+  //     transaction.customer_id === customer.id &&
+  //     transaction.amount.toString().includes(amountTerm)
+  //   );
+  //   return { ...customer, transactions };
+  // });
+
   // Filter transactions based on amount and create a new list with only relevant customers
-  const displayedCustomers = filteredCustomers?.filter(customer => {
-    const hasRelevantTransactions = data?.transactions?.some(transaction => 
-      transaction.customer_id === customer.id && 
-      transaction.amount.toString().includes(amountTerm)
+  const displayedCustomers = filteredCustomers?.filter((customer) => {
+    const hasRelevantTransactions = data?.transactions?.some(
+      (transaction) =>
+        transaction.customer_id === customer.id &&
+        transaction.amount.toString().includes(amountTerm)
     );
     return hasRelevantTransactions;
   });
 
   return (
     <>
-      <Stack direction="row" spacing={2} sx={{ width: 300, margin: '20px auto' }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ width: 300, margin: "20px auto" }}
+      >
         <TextField
           label="Search Customer"
           variant="outlined"
@@ -81,14 +95,21 @@ export default function Tables({ data }) {
               <StyledTableRow key={customer.id}>
                 <StyledTableCell>{customer.name}</StyledTableCell>
                 <StyledTableCell>
-                  {data?.transactions?.filter(transaction => 
-                    transaction.customer_id === customer.id && 
-                    transaction.amount.toString().includes(amountTerm)
-                  ).map((transaction, index) => (
-                    <p key={index}>
-                      {"Date: " + transaction.date + " : " + transaction.amount + "$"}
-                    </p>
-                  ))}
+                  {data?.transactions
+                    ?.filter(
+                      (transaction) =>
+                        transaction.customer_id === customer.id &&
+                        transaction.amount.toString().includes(amountTerm)
+                    )
+                    .map((transaction, index) => (
+                      <p key={index}>
+                        {"Date: " +
+                          transaction.date +
+                          " : " +
+                          transaction.amount +
+                          "$"}
+                      </p>
+                    ))}
                 </StyledTableCell>
               </StyledTableRow>
             ))}
