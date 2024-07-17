@@ -48,6 +48,7 @@ export default function Tables({ data }) {
   // });
 
   // Filter transactions based on amount and create a new list with only relevant customers
+  // .some returns only customer name row that matches not all customer names
   const displayedCustomers = filteredCustomers?.filter((customer) => {
     const hasRelevantTransactions = data?.transactions?.some(
       (transaction) =>
